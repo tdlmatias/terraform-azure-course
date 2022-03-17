@@ -6,3 +6,5 @@ mykey.pub
 .terraform
 .terraform.tfstate.lock.info
 .DS_Store
+.terraform.lock.hcl
+build-bastion-demo
