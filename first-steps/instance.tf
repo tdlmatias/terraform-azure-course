@@ -1,4 +1,4 @@
-# demo instance
+# Use to launch Azure Instance
 resource "azurerm_virtual_machine" "demo-instance" {
   name                  = "${var.prefix}-vm"
   location              = var.location
@@ -6,10 +6,11 @@ resource "azurerm_virtual_machine" "demo-instance" {
   network_interface_ids = [azurerm_network_interface.demo-instance.id]
   vm_size               = "Standard_A1_v2"
 
-  # this is a demo instance, so we can delete all data on termination
+# For non Production we can allow terraform to delete all data on Termination
   delete_os_disk_on_termination = true
   delete_data_disks_on_termination = true
 
+# define the OS type and version
   storage_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"
@@ -25,12 +26,14 @@ resource "azurerm_virtual_machine" "demo-instance" {
   os_profile {
     computer_name  = "demo-instance"
     admin_username = "demo"
-    #admin_password = "..."
+    admin_password = "Semba@123T=1"
   }
+
+  # Pass on My Public Key for External Access
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-      key_data = file("mykey.pub")
+      key_data = file("mydemokey.pub")
       path     = "/home/demo/.ssh/authorized_keys"
     }
   }
